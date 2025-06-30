@@ -1,13 +1,42 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from 'react';
+import Header from '../components/Header';
+import Hero from '../components/Hero';
+import CategoryGrid from '../components/CategoryGrid';
+import ProductGrid from '../components/ProductGrid';
+import Cart from '../components/Cart';
+import OrderTracking from '../components/OrderTracking';
+import { CartProvider } from '../contexts/CartContext';
 
 const Index = () => {
+  const [activeView, setActiveView] = useState('home');
+
+  const renderView = () => {
+    switch (activeView) {
+      case 'cart':
+        return <Cart />;
+      case 'tracking':
+        return <OrderTracking />;
+      default:
+        return (
+          <>
+            <Hero />
+            <CategoryGrid />
+            <ProductGrid />
+          </>
+        );
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <CartProvider>
+      <div className="min-h-screen bg-gray-50">
+        <Header activeView={activeView} setActiveView={setActiveView} />
+        <main className="pt-16">
+          {renderView()}
+        </main>
       </div>
-    </div>
+    </CartProvider>
   );
 };
 
